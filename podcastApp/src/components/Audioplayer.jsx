@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 export default function AudioPlayer({ audioSrc }) {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -76,7 +75,7 @@ export default function AudioPlayer({ audioSrc }) {
         onTimeUpdate={handleTimeUpdate}
         onEnded={() => setIsPlaying(false)}
       />
-      <div>
+      <div className='audio-player'>
         <button onClick={togglePlayPause}>{isPlaying ? 'Pause' : 'Play'}</button>
         <input
           type="range"

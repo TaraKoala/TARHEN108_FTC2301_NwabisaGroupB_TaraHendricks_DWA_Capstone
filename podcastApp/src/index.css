@@ -254,7 +254,7 @@ button{
     position: sticky;
     top: 0;
     padding: 1vw 1vw 1vw 0.3vw;
-    top: 0vw; /* Adjust this value to set the desired top position */
+    top: 0vw;
   }
   
   .description-paragraph{
@@ -319,29 +319,19 @@ button{
   
   }
   
-  
-  
-  
-  
-  /* ******************************************* */
   .show-seasons{
     background: #67228056;
     text-align: center;
   }
   
   
-  
-  /* ***********************seasons-card************************** */
-  /* .seasons{
-    width: 100%;
-  } */
+
   .seasons-card{
     display: flex;
     margin: 1vw 3vw;
     width: 25vw;
   
     min-width: 180px;
-    /* border: solid rgb(139, 21, 21) 2px; */
     background-color: white;
   
   
@@ -377,13 +367,7 @@ button{
   .seasons-metadata{
     margin: 1vw;
   }
-  /* .show-season-header{
-    align-self: center;
-    justify-content: center;
-  } */
-  
-  
-  /* ********************************meida quiries for season card******************** */
+
   .seasons{
     width: 100%;
   }
@@ -425,12 +409,7 @@ button{
   
   
   }
-  
-  
-  
-  /* *************************************************************************************** */
-  
-  /* *******************************************episodes************************************* */
+
   .episodes{
     width: 100%;
     
@@ -475,3 +454,12 @@ button{
     display: flex;
     justify-content: center;
   }
+
+.audio-player {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: sticky;
+  position: -webkit-sticky;
+  bottom: 0;
+}
