@@ -1,35 +1,190 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect, useState } from 'react';
+import Card from './components/Card'
+import Carousel from './components/Carousel'
+import Shows from './components/Shows'
+
+
+//import SearchBar from './components/SearchBar';
+import SeasonCard from './components/Season';
+import Episodes from './components/Episodes';
+import AudioPlayer from './components/AudioPlayer';
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [podcast, setPodcast] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedShow, setSelectedShow] = useState(null);
+ 
+
+  useEffect(() => {
+    fetch('https://podcast-api.netlify.app/shows')
+      .then((res) => res.json())
+      .then((data) => {
+        setPodcast(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error loading podcast data:', error);
+        setLoading(false);
+      });
+  }, []);
+
+  function handleSelectedShow(id) {
+    fetch(`https://podcast-api.netlify.app/id/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setSelectedShow(data);
+        console.log('Show Details:', data);
+      })
+      .catch((error) => {
+        console.error('Error loading show details:', error);
+        setSelectedShow(null);
+      });
+  }
+
+  const showElements = podcast.map((show) => (
+    <Card
+      key={show.id}
+      title={show.title}
+      image={show.image}
+      season={show.seasons}
+      genre={show.genres}
+      lastUpdated={new Date(show.updated).toLocaleDateString('en-US')}
+      handleShow={() => handleSelectedShow(show.id)}
+    />
+  ));
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className='body'>
+      <Navbar />
+      <Carousel />
+      <Shows />
+      <main>
+        {loading ?  <p className='loading'> <img src="./src/assets/starLogo.png" width="100px" alt="" /> Loading shows... </p> : (
+          <div className='shows-preview'> 
+            {!selectedShow && showElements}
+            {selectedShow && <ShowDetails show={selectedShow} />}
+          </div>
+        )}
+      <AudioPlayer />
+      </main>
+    </div>
+  );
+}
+
+function Navbar() {
+  return (
+    <header className="header">
+      <div className="site-title">
+        <img src=".\src\assets\starLogo.png" width='60vw' alt="StarStream-Logo" />
+        <h1 className="header--title">StarStream</h1>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+      <div className='nav-icon'>
+        <button className='image-button'><img src="./src/assets/search.png" alt="Search"/></button>
+        <div className="nav-container">
+          <input className="checkbox" type="checkbox" name="" id="" />
+          <div className="hamburger-lines">
+            <span className="line line1"></span>
+            <span className="line line2"></span>
+            <span className="line line3"></span>
+          </div>
+        </div>  
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </header>
   )
 }
 
-export default App
+
+function ShowDetails({show}) {
+
+  const [selectedSeason, setSelectedSeason] = useState(null);
+  const [currentTrack, setCurrentTrack] = useState('');
+
+  function handleEpisodePlay(file){
+    console.log(file)
+    setCurrentTrack(file)
+    console.log(currentTrack)
+  }
+
+  function handleSeasonClick(season) {
+    console.log('Clicked season:', season);
+    // Add any other logic related to handling the clicked season here
+    setSelectedSeason(season); // Set the selected season
+  }
+
+  return (
+    <div className='seasons'>
+      
+    <div className='show-hero-banner'>
+      <div className='show-image-container'>
+        <img className='show-image' src={selectedSeason ? selectedSeason.image : show.image} alt={show.title} />
+      </div>
+      <br />
+      <section className='show-metadata'>
+        <h4 className='show-card-title'>{selectedSeason ? selectedSeason.title: show.title}</h4>
+        <button>Favourite</button>
+        <br />
+        <br />
+        <strong>{selectedSeason ? (selectedSeason.episodes && selectedSeason.episodes.length) :(show.seasons && show.seasons.length)} {selectedSeason? 'episodes':'seasons'}</strong><br />
+        {selectedSeason ? '':<strong>Genres: <small><em>{show.genres ? show.genres.join(', ') : 'No specific Genre'}</em></small> </strong>} <br />
+        <strong>Last-updated: </strong><small>{show.updated && new Date(show.updated).toLocaleDateString('en-US')}</small>
+      </section>
+      {selectedSeason? <section className='show-description'></section> : <section className='show-description'>
+        <h4 className='description-header'>About:</h4>
+        <br />
+        <p className='description-paragraph'>{show.description}</p>
+      </section>}
+  
+     
+    </div>
+
+    
+    <div className='show-seasons'>
+        {!selectedSeason && show.seasons && show.seasons.map((season) => (
+          <SeasonCard  
+            key={season.id} 
+            title={season.title}
+            image={season.image}
+            episodes={season.episodes.length}
+            handleClick={()=>handleSeasonClick(season)} // Pass the season object to handleSeasonClick
+          />
+        ))}
+      </div>
+      {/* Display the selected season */}
+      {selectedSeason && 
+        <div className="episodes">
+
+          {/* <div className="season-hero-banner">
+            <div className="episode-image-container">
+              <img src={selectedSeason.image} alt={selectedSeason.title} />
+            </div>
+            <div className="season-description">
+              <h3>{selectedSeason.title}</h3>
+              <p>{selectedSeason.episodes.length} Episodes</p>
+            </div>
+          </div> */}
+
+
+          <div className="show-episodes">
+            {selectedSeason && selectedSeason.episodes.map((episode)=>{
+              return(
+                <Episodes 
+                key ={episode.id}
+                title={episode.title}
+                image ={episode.image}
+                play={()=>handleEpisodePlay(episode.file)}
+                description={episode.description}/>
+              )
+              
+            })}
+            
+          </div>
+        </div>
+      }
+    </div>
+  );
+}
+
+
+
+export default App;
