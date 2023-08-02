@@ -459,7 +459,9 @@ button{
   display: flex;
   align-items: center;
   justify-content: center;
-  position: sticky;
-  position: -webkit-sticky;
-  bottom: 0;
+  position: bottom;
+  bottom: 0vw;
+  padding: 5vw;
+  background: #67228056;
+
 }

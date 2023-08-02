@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import PropTypes from 'prop-types'
-import AudioPlayer from './AudioPlayer'
+import AudioPlayer from './Audioplayer'
 
 
 export default function AudioSelector ({ shows }) {
