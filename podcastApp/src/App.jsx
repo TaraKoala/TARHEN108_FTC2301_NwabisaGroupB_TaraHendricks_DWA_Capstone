@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from './components/Navbar';
-import Card from './components/Card'
-import Carousel from './components/Carousel'
-import Shows from './components/Shows'
+import Navbar from './components/Home/Navbar';
+import Card from './components/Shows/Card'
+import Carousel from './components/Home/Carousel'
+import Shows from './components/Home/Shows'
+import Menu from './components/Home/Menu';
 
 
 import { createClient } from '@supabase/supabase-js'
 
 // Create a single supabase client for interacting with your database
-const supabase = createClient('https://xyzcompany.supabase.co', 'public-anon-key')
+const supabase = createClient('https://bagwuefyfgrwfnoyrwhp.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhZ3d1ZWZ5Zmdyd2Zub3lyd2hwIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTA4OTE3MDAsImV4cCI6MjAwNjQ2NzcwMH0.88gE9y2nXt6llr8fETParqe0i7s675S_LvkrCW-qErw')
 
 
-//import SearchBar from './components/Search';
-import SeasonCard from './components/Season';
-import Episodes from './components/Episodes';
-import AudioPlayer from './components/Audioplayer';
+import SeasonCard from './components/Shows/Season';
+import Episodes from './components/Shows/Episodes';
+import AudioPlayer from './components/MediaPlayer/Audioplayer';
 
 
 function App() {
@@ -175,27 +175,3 @@ function ShowDetails({show}) {
 
 export default App;
 
-// import {Link, Route, Routes} from "react-router-dom"
-// import {Home} from "./components/Home"
-// import {Navbar} from "./components/Navbar"
-// import {Favorites} from "./components/Favorites"
-
-// function App() {
-
-//   return(
-//     <>
-//     <nav>
-//       <ul>
-//         <li><Link to="./src/components/Home">Home</Link> </li>
-//       </ul>
-//     </nav>
-//     <Routes>
-//       <Route path="./src/components/Home" element={Home} />
-//       <Route path="./src/components/Favorites" element={Favorites} />
-//       <Route path="./src/components/Navbar" element={Navbar} />
-//     </Routes>
-//     </>
-//   )
-// }
-
-// export default App

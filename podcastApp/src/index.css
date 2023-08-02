@@ -246,7 +246,21 @@ button{
     transform: rotate(-45deg);
   }
   
-
+  .search-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #124354;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .search-button img {
+    height: 20px;
+    margin-right: 10px;
+  }
 
   
   .description-header {
